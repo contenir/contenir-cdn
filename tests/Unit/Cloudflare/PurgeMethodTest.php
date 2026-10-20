@@ -18,7 +18,7 @@ final class PurgeMethodTest extends TestCase
     public function namesEachWay(): void
     {
         static::assertSame(
-            ['everything', 'by hostname', 'by prefix', 'by cache tag', 'by URL'],
+            ['everything', 'by URL', 'by cache tag', 'by hostname', 'by prefix'],
             array_map(static fn(PurgeMethod $method): string => $method->label(), PurgeMethod::cases()),
         );
     }
