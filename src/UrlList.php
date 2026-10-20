@@ -11,8 +11,11 @@ use function in_array;
 use function is_string;
 use function parse_url;
 use function sprintf;
+use function str_ends_with;
 use function str_replace;
+use function str_starts_with;
 use function strtolower;
+use function substr;
 use function trim;
 
 use const PHP_URL_HOST;
@@ -22,7 +25,8 @@ use const PHP_URL_SCHEME;
  * URLs an editor typed to be purged, one to a line, sorted into those the
  * site may purge and those it may not. A CDN caches a URL by its full
  * address, so each must be absolute (http or https) and on one of the site's
- * own hosts. Blank lines are skipped and repeats kept once.
+ * own hosts. A host written *.example.com stands for every subdomain of
+ * example.com. Blank lines are skipped and repeats kept once.
  *
  * @api
  */
@@ -38,7 +42,7 @@ final readonly class UrlList
     ) {}
 
     /**
-     * @param list<string> $hosts The site's hosts, such as www.example.com
+     * @param list<string> $hosts The site's hosts, such as www.example.com, or *.example.com for its subdomains
      */
     public static function fromText(string $text, array $hosts): self
     {
@@ -66,6 +70,24 @@ final readonly class UrlList
     /**
      * @param list<string> $hosts
      */
+    private static function onHosts(string $host, array $hosts): bool
+    {
+        foreach ($hosts as $allowed) {
+            if (
+                $host === $allowed
+                || str_starts_with($allowed, '*.')
+                && str_ends_with($host, substr($allowed, offset: 1))
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param list<string> $hosts
+     */
     private static function problem(string $url, array $hosts): ?string
     {
         $scheme = parse_url($url, component: PHP_URL_SCHEME);
@@ -78,10 +100,8 @@ final readonly class UrlList
             return 'Enter the full address, starting https://';
         }
 
-        if (! in_array(strtolower($host), $hosts, strict: true)) {
-            return sprintf('%s is not one of this site\'s addresses', $host);
-        }
-
-        return null;
+        return self::onHosts(strtolower($host), $hosts)
+            ? null
+            : sprintf('%s is not one of this site\'s addresses', $host);
     }
 }

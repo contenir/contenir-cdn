@@ -37,6 +37,26 @@ final class UrlListTest extends TestCase
     }
 
     #[Test]
+    public function acceptsEverySubdomainOfAWildcardHost(): void
+    {
+        $list = UrlList::fromText(
+            "https://www.example.com/a\nhttps://cdn.assets.example.com/b\nhttps://example.com/c\nhttps://badexample.com/d",
+            ['*.example.com'],
+        );
+
+        static::assertSame(
+            [
+                ['https://www.example.com/a', 'https://cdn.assets.example.com/b'],
+                [
+                    'https://example.com/c'    => 'example.com is not one of this site\'s addresses',
+                    'https://badexample.com/d' => 'badexample.com is not one of this site\'s addresses',
+                ],
+            ],
+            [$list->urls, $list->refused],
+        );
+    }
+
+    #[Test]
     public function acceptsTheSitesOwnAddressesOnePerLine(): void
     {
         $list = UrlList::fromText(
@@ -68,5 +88,11 @@ final class UrlListTest extends TestCase
             $list->urls,
             $list->refused,
         ]);
+    }
+
+    #[Test]
+    public function treatsAHostEndingLikeAnotherAsADifferentHost(): void
+    {
+        static::assertSame([], UrlList::fromText('https://www.example.com/', ['example.com', 'ample.com'])->urls);
     }
 }

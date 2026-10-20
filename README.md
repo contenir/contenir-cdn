@@ -134,14 +134,15 @@ with version 2 of the Cloudflare add-on.
 ## An editor's list of URLs
 
 ```php
-$list = UrlList::fromText($typed, ['example.com', 'www.example.com']);
+$list = UrlList::fromText($typed, ['example.com', '*.example.com']);
 
 $list->urls;      // the URLs to purge
 $list->refused;   // each line refused, and why
 ```
 
 A CDN caches each URL by its full address, so each line must be an absolute `http` or `https` URL on one of the site's
-hosts. Blank lines are skipped and repeats kept once.
+hosts. A host written `*.example.com` stands for every subdomain of `example.com`. Blank lines are skipped and repeats
+kept once.
 
 ## Licence
 
