@@ -1,4 +1,4 @@
-# contenir/cdn
+# contenir/contenir-cdn
 
 [![Continuous Integration](https://github.com/contenir/contenir-cdn/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/contenir/contenir-cdn/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/contenir/contenir-cdn/graph/badge.svg)](https://codecov.io/gh/contenir/contenir-cdn)
@@ -128,7 +128,7 @@ A public page carries `c-site`, `c-sec-<section>` for each section whose records
 the listing pages, and the CMS needs no URLs. Names are lower-cased, and anything but letters, digits, dots and
 underscores becomes an underscore, so a hyphen only ever separates the parts.
 
-Sending the tags is a site adapter's job. Those adapters (`contenir/cdn-laminas-mvc` and `contenir/cdn-mezzio`) come
+Sending the tags is a site adapter's job. Those adapters (`contenir/contenir-cdn-laminas-mvc` and `contenir/contenir-cdn-mezzio`) come
 with version 2 of the Cloudflare add-on.
 
 ## An editor's list of URLs
