@@ -1,5 +1,5 @@
 {
-    "name": "contenir/cdn",
+    "name": "contenir/contenir-cdn",
     "description": "Framework-free CDN purging for Contenir: the purger interface, cache-tag naming, URL batching, debouncing and a Cloudflare API client that signs in with a token.",
     "type": "library",
     "license": "BSD-3-Clause",

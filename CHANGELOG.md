@@ -6,6 +6,11 @@ adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased] - 2026-10-21
 
+### Changed
+
+- The package is named `contenir/contenir-cdn`, after its repository, as every Contenir library is. It was
+  `contenir/cdn`, which never reached Packagist. The namespace, `Contenir\Cdn\`, is unchanged.
+
 ### Added
 
 - `PurgerInterface`, which a CMS calls to purge URLs or everything, best effort, and `NullPurger`, which purges
